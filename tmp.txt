@@ -1,0 +1,24 @@
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 9867 entries, 0 to 9866
+Data columns (total 23 columns):
+ #   Column                         Non-Null Count  Dtype   
+---  ------                         --------------  -----   
+ 0   Gender                         9867 non-null   object  DIRECT
+ 1   Profession                     9867 non-null   object  DIRECT
+ 2   Department                     9867 non-null   object  SEGMENT INTO: MONETERAY, PROPORTION OF CONSULTATIONS
+ 3   Patient_ID                     9867 non-null   int64   ID
+ 4   City_of_Residence              9867 non-null   object  DIRECT
+ 5   Family_History                 7908 non-null   object  DIRECT
+ 6   Marital_Status                 9867 non-null   object  DIRECT
+ 7   Visit_Date                     9867 non-null   int64   GET: RECENCY, TIME SINCE FIRST VISIT, MOST FREQUENT DEPARTMENT IN EACH MONTH
+ 8   Consultation_Duration          9867 non-null   int64   GET MEAN (maybe relate with dept?)
+ 9   Satisfaction_Level             9867 non-null   int64   GET MEAN (maybe relate with dept?)
+ 10  Consultation_Price             9867 non-null   float64 SEGMENTED + GET MONETARY (SUM)
+ 11  IMP_Age                        9867 non-null   float64 DIRECT
+ 12  _WARN_                         0 non-null      float64 REMOVE
+ 13  IMP_Approximate_Annual_Income  9867 non-null   float64 GET MEAN
+ 14  IMP_Education_Level            9867 non-null   object  DIRECT
+ 15  IMP_Insurance_Coverage         9867 non-null   float64 PROPORTION (IN RELATION WITH TOTAL MONETARY)
+ 16  IMP_Insurance_Provider         8056 non-null   category DIRECT 
+dtypes: category(1), float64(5), int64(4), int8(6), object(7)
+memory usage: 1.3+ MB

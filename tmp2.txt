@@ -1,0 +1,35 @@
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 9867 entries, 0 to 9866
+Data columns (total 28 columns):
+ #   Column                         Non-Null Count  Dtype  
+---  ------                         --------------  -----  
+ 0   Department                     9867 non-null   object 
+ 1   Patient_ID                     9867 non-null   int64  
+ 2   City_of_Residence              9867 non-null   object 
+ 3   Visit_Date                     9867 non-null   int64  
+ 4   Consultation_Duration          9867 non-null   int64  
+ 5   Satisfaction_Level             9867 non-null   int64  
+ 6   Consultation_Price             9867 non-null   float64
+ 7   IMP_Age                        9867 non-null   float64
+ 8   IMP_Approximate_Annual_Income  9867 non-null   float64
+ 9   IMP_Education_Level            9867 non-null   object 
+ 10  IMP_Insurance_Coverage         9867 non-null   float64
+ 11  isMale                         9867 non-null   int8   
+ 12  isFemale                       9867 non-null   int8   
+ 13  InsuranceProviderIsA           9867 non-null   int8   
+ 14  InsuranceProviderIsB           9867 non-null   int8   
+ 15  InsuranceProviderIsC           9867 non-null   int8   
+ 16  InsuranceProviderIsD           9867 non-null   int8   
+ 17  isWorker                       9867 non-null   int8   DIRECT
+ 18  isStudent                      9867 non-null   int8   DIRECT
+ 19  isRetired                      9867 non-null   int8   DIRECT
+ 20  isMarried                      9867 non-null   int8   DIRECT
+ 21  isWidowed                      9867 non-null   int8   DIRECT
+ 22  isSingle                       9867 non-null   int8   DIRECT
+ 23  isDivorced                     9867 non-null   int8   DIRECT
+ 24  FamilyHadCancer                9867 non-null   int8   DIRECT
+ 25  FamilyHadHypertension          9867 non-null   int8   DIRECT
+ 26  FamilyHadHeartDisease          9867 non-null   int8   DIRECT
+ 27  FamilyHadDiabetes              9867 non-null   int8   DIRECT
+dtypes: float64(4), int64(4), int8(17), object(3)
+memory usage: 1011.9+ KB

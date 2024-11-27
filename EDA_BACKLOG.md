@@ -58,14 +58,78 @@ Possible inconsistencies
 - Age and education level: multiple queries (by education level)
     - Example: elementary students should not be over 12 (UK school system)
     - For other specific cases we should take UK's system as reference
-- Age and profession: people under 19 should be students only or similar
+        - Accept discrepancy by 1-2 years, taking held back students into account
+- Age and profession: people under 19 should be students only (as education is obligatory until a certain age)
 - Age and income: people under 16 should not have an income
-- Profession and education level: multiple queries 
+- Profession and education level: multiple queries (maybe)
     - ex: engineers or lawyers should at least be undergraduates
+
 - Patient ID: check if there are differences between demographic data (like the ages should be the same...)
     - Age
     - Gender
     - Family History
+    - Annual Income
     - We do not check for city of residence, marital status, education level, profession as they can change in 5 months
+    - Insurance provider: to ask professor
+        - 31 different rows, we can delete but in reality we should keep them for a separate analysis
+
 - consultation price and insurance coverage: insurange coverage should always be smaller than consultation price
 - insurange provider and insurance coverage: people without insurance should not have insurance coverage at all
+Resolved through queries in SAS guide.
+
+In most cases inconsistent rows will be deleted (because in 5 months the changes are considered to be too "radical", thus considered an anomaly due to an error), except for:
+- Patient ID with AGE as the imputed values do not coincide with actual values (or imputed values do not coincide with each other):
+    - If all are imputed values (floats), then get mean
+    - If there is at least one integer value (non-imputed), then replace every imputed value with this value
+    - If there is more than one integer value, then get mean of integer values and replace every imputed with this one
+Investigations (a SQL query) will reveal that the case ii. is the only one which happens. To correct the rows, we will use a script powered by Python and Pandas.
+
+Satisfaction level: check if in range 0-5.
+- Discovery: some are 6, above than 5.
+    - Solution: correct 6 -> 5 (deleting is not feasible as a lot of patients have rated above 5) 
+    - Tools: manually correct with Excel before passing the file to ABTMaker.sas
+    - Or to ask professor if we can assume that 6 is acceptable
+
+### Part 4. ABTs
+We need to create derived variables for out *ABT*. We will use the data before dummy transformation, as it makes our life easier.
+- For each patient we can associate uniquely its biographical and anagraphical data, namely:
+    - Gender
+    - Age
+    - Profession
+    - Marital status
+    - Family history
+Each variable is assumed to be unique. If not, there will be duplicates in our ABT.
+
+- Segment departments into each information:
+    - Total amount of money spent
+    - Proportion of consultations
+    - Most frequent department visit for each month
+- From visit dates get:
+    - Recency (time since last visit)
+    - Membership time (time since first visit)
+- Get average of:
+    - Consultation duration
+    - Satisfaction level
+    - Approximate annual income to get a better estimate
+- From insurance coverage get:
+    - Proportion of total coverage respect to its total amount
+- Get mode of:
+    - department
+
+### Part 5. Data transformation
+We might have to do a bit of data transformation (except standardizing). In particular we have to get:
+- Quantitative variables
+So we have to transform qualitative to quantitative.
+Main ways:
+- Dummy transformation for variables where order make no sense
+- Encoding for variables where order makes sense (ex: education level)
+    - To ask professor about it
+- We have to leave department, city of residence as it is since there are so many categories
+- We can transform:
+    - Gender with one hot encoding
+    - Profession first by grouping "Worker", "Student" and "Retired" and then one hot encoding
+        - Or income can be a good proxy variable
+        - Ask the prof. during practical in case
+    - Insurance provider with one hot encoding
+    - Same as family history, marital status
+Resolved through a `.py` script (using Pandas)
