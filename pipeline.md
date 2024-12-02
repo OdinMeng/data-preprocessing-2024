@@ -1,6 +1,6 @@
 # Data Preprocessing Project Backlog
 ## Exploratory Data Analysis
-**Objectives.** Find outliers and missing values, treat outliers and missing values. Gain initial insights on variables' distributions.
+This file describes the pipeline of the entire project, up until data visualization.
 
 ### Part 1. Preliminary EDA
 1. Imported the file
@@ -17,6 +17,7 @@
     - This might cause a light skew on small ages in the Age variable. Need to confirm by rechecking its histogram after outlier omission.
 - Education Level: Significative prevalence on "Master" and "Undergraduate" and 29 missing variables
 - Family History: slight prevalence of heart disease
+    - Missing values can represent patients which effectively do not have history of diseases
 - Gender: nothing of note
 - Insurance coverage: missing values and a significative prevalence of people without insurance coverage. Excluding them, the variable has a slight right-skew
 - Insurance provider: there are some missing variables, the distribution seems to be more or less uniform
@@ -46,7 +47,7 @@
 - There is a significative (but not high enough) correlation between:
     - Age x ANI = 0.607
     - Consultation Price x Insurance Coverage = 0.63
-- Even though these numbers are still inside the range [-0.7, 0.7], we still need to tread carefully with them.
+- Even though these numbers are still inside the range [-0.7, 0.7], it is still high enough.
 5. Clustering (for Multidimensional outliers)
 - For k=4, there seems to be no multidimensional outliers
 6. Data Transformation
@@ -64,37 +65,32 @@ Possible inconsistencies
 - Profession and education level: multiple queries (maybe)
     - ex: engineers or lawyers should at least be undergraduates
 
-- Patient ID: check if there are differences between demographic data (like the ages should be the same...)
-    - Age
-    - Gender
-    - Family History
-    - Annual Income
+- Patient ID: check if there are differences between the patients' information (like the age of a patient should be the same...)
+    - Age: if there are discrepancies, take average
+    - Gender: delete 
+    - Family History: delete
     - We do not check for city of residence, marital status, education level, profession as they can change in 5 months
-    - Insurance provider: to ask professor
+    - Insurance provider: to ask professor (but delete)
         - 31 different rows, we can delete but in reality we should keep them for a separate analysis
 
 - consultation price and insurance coverage: insurange coverage should always be smaller than consultation price
 - insurange provider and insurance coverage: people without insurance should not have insurance coverage at all
 Resolved through queries in SAS guide.
 
-In most cases inconsistent rows will be deleted (because in 5 months the changes are considered to be too "radical", thus considered an anomaly due to an error), except for:
-- Patient ID with AGE as the imputed values do not coincide with actual values (or imputed values do not coincide with each other):
-    - If all are imputed values (floats), then get mean
-    - If there is at least one integer value (non-imputed), then replace every imputed value with this value
-    - If there is more than one integer value, then get mean of integer values and replace every imputed with this one
-Investigations (a SQL query) will reveal that the case ii. is the only one which happens. To correct the rows, we will use a script powered by Python and Pandas.
+In most cases inconsistent rows will be deleted (because in 5 months the changes are considered to be too "radical", thus considered an anomaly due to an error).
 
 Satisfaction level: check if in range 0-5.
 - Discovery: some are 6, above than 5.
     - Solution: correct 6 -> 5 (deleting is not feasible as a lot of patients have rated above 5) 
-    - Tools: manually correct with Excel before passing the file to ABTMaker.sas
+    - Tools: manually corrected with script in SAS guide
     - Or to ask professor if we can assume that 6 is acceptable
 
-### Part 4. ABTs
+
+### Part 4. ABT
 We need to create derived variables for out *ABT*. We will use the data before dummy transformation, as it makes our life easier.
 - For each patient we can associate uniquely its biographical and anagraphical data, namely:
     - Gender
-    - Age
+    - Age (as average due to imputations)
     - Profession
     - Marital status
     - Family history
@@ -105,8 +101,8 @@ Each variable is assumed to be unique. If not, there will be duplicates in our A
     - Proportion of consultations
     - Most frequent department visit for each month
 - From visit dates get:
-    - Recency (time since last visit)
-    - Membership time (time since first visit)
+    - Recency (days since last visit)
+    - Membership time (days since first visit)
 - Get average of:
     - Consultation duration
     - Satisfaction level
@@ -116,20 +112,5 @@ Each variable is assumed to be unique. If not, there will be duplicates in our A
 - Get mode of:
     - department
 
-### Part 5. Data transformation
-We might have to do a bit of data transformation (except standardizing). In particular we have to get:
-- Quantitative variables
-So we have to transform qualitative to quantitative.
-Main ways:
-- Dummy transformation for variables where order make no sense
-- Encoding for variables where order makes sense (ex: education level)
-    - To ask professor about it
-- We have to leave department, city of residence as it is since there are so many categories
-- We can transform:
-    - Gender with one hot encoding
-    - Profession first by grouping "Worker", "Student" and "Retired" and then one hot encoding
-        - Or income can be a good proxy variable
-        - Ask the prof. during practical in case
-    - Insurance provider with one hot encoding
-    - Same as family history, marital status
-Resolved through a `.py` script (using Pandas)
+# 4. Final adjustments on Excel
+Made some final adjustments on excel
